@@ -1,8 +1,8 @@
 # express-brute-store-sequelize
 Sequelize store for module express-brute
-#Install 
+# Install 
 `npm install winston-transport-sequelize`
-#Example
+# Example
 ```js
 var ExpressBruteStore = require('express-brute-store-sequelize');
 var ExpressBrute = require('express-brute');
@@ -29,7 +29,7 @@ var brute = new ExpressBrute(bruteStore, bruteOptions);
 
 Sequelize model will be created after sequelize.sync() 
 
-#More
+# More
 This transport has its own method `.clear([lifetime])`
 
 You can clear table using this. Lifetime option for filtering by "updateAt" field.

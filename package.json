@@ -1,0 +1,25 @@
+{
+    "name": "express-brute-store-sequelize",
+    "version": "0.0.1",
+    "description": "Sequelize store for module express-brute",
+    "main": "./express-brute-store-sequelize.js",
+    "author": {
+        "name": "Balasyan Alexandr",
+        "email": "mywebstreet@gmail.com"
+    },
+    "keywords": [
+        "brute",
+        "bruteforce",
+        "sequelize",
+        "store",
+        "security"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "sequelize": "*"
+    },
+	"repository" : { 
+		"type" : "git",
+		"url" : "https://github.com/ortexx/express-brute-store-sequelize"
+	}	
+}

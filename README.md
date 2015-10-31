@@ -1,7 +1,7 @@
 # express-brute-store-sequelize
 Sequelize store for module express-brute
 # Install 
-`npm install winston-transport-sequelize`
+`npm install express-brute-store-sequelize`
 # Example
 ```js
 var ExpressBruteStore = require('express-brute-store-sequelize');

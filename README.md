@@ -29,7 +29,9 @@ var brute = new ExpressBrute(bruteStore, bruteOptions);
 
 Sequelize model will be created after sequelize.sync() 
 
+You can find model in `store.model`
+
 # More
 This transport has its own method `.clear([lifetime])`
 
-You can clear table using this. Lifetime option for filtering by "updateAt" field.
+You can clear table using this. Lifetime(ms) option for filtering by "updateAt" field.

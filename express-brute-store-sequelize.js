@@ -19,7 +19,11 @@ var bruteStore = module.exports = function (sequelize, options) {
         firstRequest: Sequelize.DATE,       
         lastRequest: Sequelize.DATE,      
         count: Sequelize.INTEGER
-    });
+    }, {
+		timestamps: true,
+		createdAt: 'createdAt',
+		updatedAt: 'updatedAt'
+	});
 }
 
 bruteStore.prototype = Object.create(AbstractClientStore.prototype);

@@ -10,14 +10,15 @@ var bruteStore = module.exports = function (sequelize, options) {
         this.options.tableName = 'ExpressBrute';
     }
 
+    var dateType = sequelize.options.dialect === 'mysql' ? Sequelize.DATE(6) : Sequelize.DATE;
     this.model = sequelize.define(this.options.tableName, {
         key:{
             type: Sequelize.STRING,
             primaryKey: true
         },
-        lifetime: Sequelize.DATE,
-        firstRequest: Sequelize.DATE,       
-        lastRequest: Sequelize.DATE,      
+        lifetime: dateType,
+        firstRequest: dateType,
+        lastRequest: dateType,
         count: Sequelize.INTEGER
     }, {
 		timestamps: true,

@@ -6,18 +6,17 @@ var bruteStore = module.exports = function (sequelize, options) {
 
     this.options = options || {};
     
-    if (!this.options.tableName) {
-        this.options.tableName = 'ExpressBrute';
-    }
+    this.options.tableName = this.options.tableName || 'ExpressBrute';    
+    this.options.dateType = this.options.dateType || Sequelize.DATE;
 
     this.model = sequelize.define(this.options.tableName, {
         key:{
             type: Sequelize.STRING,
             primaryKey: true
         },
-        lifetime: Sequelize.DATE,
-        firstRequest: Sequelize.DATE,       
-        lastRequest: Sequelize.DATE,      
+        lifetime: this.options.dateType,
+        firstRequest: this.options.dateType,       
+        lastRequest: this.options.dateType,      
         count: Sequelize.INTEGER
     }, {
 		timestamps: true,

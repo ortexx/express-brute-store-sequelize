@@ -1,7 +1,9 @@
 # express-brute-store-sequelize
 Sequelize store for module express-brute
+
 # Install 
 `npm install express-brute-store-sequelize`
+
 # Example
 ```js
 var ExpressBruteStore = require('express-brute-store-sequelize');
@@ -32,6 +34,6 @@ Sequelize model will be created after sequelize.sync()
 You can find model in `store.model`
 
 # More
-This transport has its own method `.clear([lifetime])`
+This transport has own method `.clear([lifetime])`
 
-You can clear table using this. Lifetime(ms) option for filtering by "updateAt" field.
+You can clear old data using this. Lifetime(seconds) option for filtering by "updateAt" field.

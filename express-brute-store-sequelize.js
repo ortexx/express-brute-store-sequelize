@@ -1,106 +1,110 @@
-﻿var AbstractClientStore = require('express-brute/lib/AbstractClientStore');
-var Sequelize = require('sequelize');
+﻿"use strict";
 
-var bruteStore = module.exports = function (sequelize, options) {
-    AbstractClientStore.apply(this, arguments);
+const AbstractClientStore = require('express-brute/lib/AbstractClientStore');
+const Sequelize = require('sequelize');
+
+class BruteStore extends AbstractClientStore {
+  constructor(sequelize, options) {
+    super();
+
+    if(!sequelize) {
+      throw new Error('The first argument of ExpressBruteStoreSequelize must be sequelize instance');
+    }
 
     this.options = options || {};
-    
-    this.options.tableName = this.options.tableName || 'ExpressBrute';    
+    this.options.tableName = this.options.tableName || 'ExpressBrute';
     this.options.dateType = this.options.dateType || Sequelize.DATE;
 
     this.model = sequelize.define(this.options.tableName, {
-        key:{
-            type: Sequelize.STRING,
-            primaryKey: true
-        },
-        lifetime: this.options.dateType,
-        firstRequest: this.options.dateType,       
-        lastRequest: this.options.dateType,      
-        count: Sequelize.INTEGER
+      key:{
+        type: Sequelize.STRING,
+        primaryKey: true
+      },
+      lifetime: this.options.dateType,
+      firstRequest: this.options.dateType,
+      lastRequest: this.options.dateType,
+      count: Sequelize.INTEGER
     }, {
-		timestamps: true,
-		createdAt: 'createdAt',
-		updatedAt: 'updatedAt'
-	});
-}
+      timestamps: true,
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt'
+    });
+  }
 
-bruteStore.prototype = Object.create(AbstractClientStore.prototype);
+  set(key, value, lifetime, callback) {
+    let data = {
+      count: value.count,
+      lastRequest: value.lastRequest,
+      firstRequest: value.firstRequest,
+      lifetime: new Date(Date.now() + (lifetime || 0) * 1000)
+    };
 
-bruteStore.prototype.set = function (key, value, lifetime, callback) {    
-    var args = arguments,
-        self = this;
+    return this.model.findOne({ where: { key: key } }).then((brute) => {
+      if (!brute) {
+        data.key = key;
 
-    var data = {
-        count: value.count,
-        lastRequest: value.lastRequest,
-        firstRequest: value.firstRequest,
-        lifetime: new Date(Date.now() + lifetime * 1000)
-    }
-    
-    return this.model.findOne({ where: { key: key } }).then(function (brute) {
-        if (brute) {
-            return brute.updateAttributes(data).then(function () {
-                if (callback) callback();
-            })
-        }
-        else {
-            data.key = key;
+        return this.model.create(data).then((brute) => {
+          let res = brute.get();
+          typeof callback == 'function' && callback(null, res);
+          return res;
+        });
+      }
 
-            return self.model.create(data).then(function () {
-                if (callback) callback();
-            })
-        }
+      return brute.update(data).then((brute) => {
+        let res = brute.get();
+        typeof callback == 'function' && callback(null, res);
+        return res;
+      });
+    }).catch(function (err) {
+      typeof callback == 'function' && callback(err);
+    });
+  }
+
+  get(key, callback) {
+    return this.model.findOne({ where: { key: key } }).then((brute) => {
+      if (!brute) {
+        typeof callback == 'function' && callback();
+      }
+
+      let data = brute.get();
+
+      if (data.lifetime < new Date()) {
+        return brute.destroy().then(() => {
+          typeof callback == 'function' && callback();
+        })
+      }
+
+      typeof callback == 'function' && callback(null, data);
+      return data;
     })
     .catch(function (err) {
-        if (callback) callback(err);
+      typeof callback == 'function' && callback(err);
     })
-}
+  }
 
-bruteStore.prototype.get = function (key, callback) {    
-    return this.model.findOne({ where: { key: key } }).then(function (brute) {
-        if (brute) {
-            var data = {
-                count: brute.get('count'),
-                lastRequest: brute.get('lastRequest'),
-                firstRequest: brute.get('firstRequest')
-            }
+  reset(key, callback) {
+    return this.model.destroy({ where: { key: key } }).then(() => {
+      typeof callback == 'function' && callback();
+    }).catch(function (err) {
+      typeof callback == 'function' && callback(err);
+    })
+  };
 
-            if (brute.get('lifetime') < new Date()) {
-                return brute.destroy().then(function () {
-                    if (callback) callback();
-                })
-            }
-            else {
-                if (callback) callback(null, data);
-            }
-        }
-        else {
-            if (callback) callback();
-        }        
-    })
-    .catch(function (err) {
-        if (callback) callback(err);
-    })
-}
-
-bruteStore.prototype.reset = function (key, callback) {
-    return this.model.destroy({ where: { key: key } }).then(function (brute) {
-        if (callback) callback();
-    })
-    .catch(function (err) {
-        if (callback) callback(err);
-    })
-};
-
-bruteStore.prototype.clear = function (lifetime) {
-    var clause = { truncate: true };
+  clear(lifetime, callback) {
+    let clause = { truncate: true };
 
     if (typeof lifetime == 'number') {
-        clause = { where: { updatedAt: { $lt: new Date(Date.now() - lifetime) } } };    
+      clause = { where: { updatedAt: { $lt: new Date(Date.now() - lifetime * 1000) } } };
     }
 
-    return this.model.destroy(clause);
-};
+    return this.model.destroy(clause).then(() => {
+      typeof callback == 'function' && callback();
+    }).catch(function (err) {
+      typeof callback == 'function' && callback(err);
+    })
+  };
+}
+
+module.exports = BruteStore;
 
 

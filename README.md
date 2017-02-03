@@ -22,6 +22,7 @@ var bruteOptions =  {
 
 var bruteStoreOptions = {
   tableName: 'ExpressBrute' // this is default name
+  fields: { key: Sequelize.INTEGER } // you can merge model fields
 }
 
 var sequelize = new Sequelize(...);
@@ -34,6 +35,6 @@ Sequelize model will be created after sequelize.sync()
 You can find model in `store.model`
 
 # More
-This transport has own method `.clear([lifetime])`
+This transport has own method `.clear([lifetime], [callback])`
 
 You can clear old data using this. Lifetime(seconds) option for filtering by "updateAt" field.

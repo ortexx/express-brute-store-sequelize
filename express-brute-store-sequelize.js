@@ -13,18 +13,20 @@ class BruteStore extends AbstractClientStore {
 
     this.options = options || {};
     this.options.tableName = this.options.tableName || 'ExpressBrute';
-    this.options.dateType = this.options.dateType || Sequelize.DATE;
-
-    this.model = sequelize.define(this.options.tableName, {
+    this.options.fields = this.options.fields || {};
+    
+    let schema = Object.assign({
       key:{
         type: Sequelize.STRING,
         primaryKey: true
       },
-      lifetime: this.options.dateType,
-      firstRequest: this.options.dateType,
-      lastRequest: this.options.dateType,
+      lifetime: Sequelize.DATE,
+      firstRequest: Sequelize.DATE,
+      lastRequest: Sequelize.DATE,
       count: Sequelize.INTEGER
-    }, {
+    }, this.options.fields);
+
+    this.model = sequelize.define(this.options.tableName, schema, {
       timestamps: true,
       createdAt: 'createdAt',
       updatedAt: 'updatedAt'
@@ -57,6 +59,7 @@ class BruteStore extends AbstractClientStore {
       });
     }).catch(function (err) {
       typeof callback == 'function' && callback(err);
+      throw err;
     });
   }
 
@@ -79,6 +82,7 @@ class BruteStore extends AbstractClientStore {
     })
     .catch(function (err) {
       typeof callback == 'function' && callback(err);
+      throw err;
     })
   }
 
@@ -87,10 +91,16 @@ class BruteStore extends AbstractClientStore {
       typeof callback == 'function' && callback();
     }).catch(function (err) {
       typeof callback == 'function' && callback(err);
+      throw err;
     })
   };
 
   clear(lifetime, callback) {
+    if(typeof lifetime == 'function') {
+      callback = lifetime;
+      lifetime = undefined;
+    }
+    
     let clause = { truncate: true };
 
     if (typeof lifetime == 'number') {
@@ -101,6 +111,7 @@ class BruteStore extends AbstractClientStore {
       typeof callback == 'function' && callback();
     }).catch(function (err) {
       typeof callback == 'function' && callback(err);
+      throw err;
     })
   };
 }

@@ -67,7 +67,7 @@ class BruteStore extends AbstractClientStore {
     return this.model.findOne({ where: { key: key } }).then((brute) => {
       if (!brute) {
         typeof callback == 'function' && callback();
-        return
+        return;
       }
 
       let data = brute.get();

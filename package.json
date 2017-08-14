@@ -1,8 +1,8 @@
 {
   "name": "express-brute-store-sequelize",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Sequelize store for module express-brute",
-  "main": "./express-brute-store-sequelize.js",
+  "main": "./index.js",
   "author": {
     "name": "Balasyan Alexandr",
     "email": "mywebstreet@gmail.com"

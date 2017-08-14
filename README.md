@@ -6,11 +6,11 @@ Sequelize store for module express-brute
 
 # Example
 ```js
-var ExpressBruteStore = require('express-brute-store-sequelize');
-var ExpressBrute = require('express-brute');
-var Sequelize = require('sequelize');
+const ExpressBruteStore = require('express-brute-store-sequelize');
+const ExpressBrute = require('express-brute');
+const Sequelize = require('sequelize');
 
-var bruteOptions =  {
+const bruteOptions =  {
   freeRetries: 5,
   proxyDepth: 1,
   minWait: 2000, 
@@ -20,14 +20,15 @@ var bruteOptions =  {
   refreshTimeoutOnRequest : false
 }
 
-var bruteStoreOptions = {
-  tableName: 'ExpressBrute' // this is default name
-  fields: { key: Sequelize.INTEGER } // you can merge model fields
+const bruteStoreOptions = {
+  tableName: 'ExpressBrute', // this is default name
+  fields: { key: Sequelize.INTEGER }, // you can merge model fields
+  modelOptions: { timestamps: false } // you can merge model options
 }
 
-var sequelize = new Sequelize(...);
-var bruteStore = new ExpressBruteStore(sequelize, bruteStoreOptions);
-var brute = new ExpressBrute(bruteStore, bruteOptions);
+const sequelize = new Sequelize(...);
+const bruteStore = new ExpressBruteStore(sequelize, bruteStoreOptions);
+const brute = new ExpressBrute(bruteStore, bruteOptions);
 ```
 
 Sequelize model will be created after sequelize.sync() 

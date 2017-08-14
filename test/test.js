@@ -2,7 +2,7 @@
 
 const assert = require('chai').assert;
 const Sequelize = require('sequelize');
-const Store = require('../express-brute-store-sequelize');
+const Store = require('../index');
 
 let sequelize = new Sequelize('database', 'username', 'password', {
   dialect: 'sqlite',

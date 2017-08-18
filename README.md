@@ -22,7 +22,7 @@ const bruteOptions =  {
 
 const bruteStoreOptions = {
   tableName: 'ExpressBrute', // this is default name
-  fields: { key: Sequelize.INTEGER }, // you can merge model fields
+  fields: { key: Sequelize.STRING }, // you can merge model fields
   modelOptions: { timestamps: false } // you can merge model options
 }
 

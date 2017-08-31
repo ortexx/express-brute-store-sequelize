@@ -24,7 +24,7 @@ const bruteStoreOptions = {
   tableName: 'ExpressBrute', // this is default name
   fields: { key: Sequelize.STRING }, // you can merge model fields
   modelOptions: { timestamps: false } // you can merge model options
-}
+};
 
 const sequelize = new Sequelize(...);
 const bruteStore = new ExpressBruteStore(sequelize, bruteStoreOptions);

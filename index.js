@@ -67,8 +67,8 @@ class BruteStore extends AbstractClientStore {
   get(key, callback) {
     return this.model.findOne({ where: { key: key } }).then((brute) => {
       if (!brute) {
-        typeof callback == 'function' && callback();
-        return;
+        typeof callback == 'function' && callback();  
+        return;      
       }
 
       let data = brute.get();
@@ -76,7 +76,8 @@ class BruteStore extends AbstractClientStore {
       if (data.lifetime < new Date()) {
         return brute.destroy().then(() => {
           typeof callback == 'function' && callback();
-        })
+          return;
+        });
       }
 
       typeof callback == 'function' && callback(null, data);
@@ -85,7 +86,7 @@ class BruteStore extends AbstractClientStore {
     .catch(function (err) {
       typeof callback == 'function' && callback(err);
       throw err;
-    })
+    });
   }
 
   reset(key, callback) {
@@ -94,7 +95,7 @@ class BruteStore extends AbstractClientStore {
     }).catch(function (err) {
       typeof callback == 'function' && callback(err);
       throw err;
-    })
+    });
   };
 
   clear(lifetime, callback) {
@@ -114,7 +115,7 @@ class BruteStore extends AbstractClientStore {
     }).catch(function (err) {
       typeof callback == 'function' && callback(err);
       throw err;
-    })
+    });
   };
 }
 

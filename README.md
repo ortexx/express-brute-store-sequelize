@@ -5,6 +5,7 @@ Sequelize store for module express-brute
 `npm install express-brute-store-sequelize`
 
 # Example
+
 ```js
 const ExpressBruteStore = require('express-brute-store-sequelize');
 const ExpressBrute = require('express-brute');

@@ -34,7 +34,7 @@ const brute = new ExpressBrute(bruteStore, bruteOptions);
 
 Sequelize model will be created after sequelize.sync() 
 
-You can find model in `store.model`
+You can find the model in `store.model`
 
 # More
 This transport has own method `.clear([lifetime], [callback])`

@@ -27,7 +27,7 @@ const bruteStoreOptions = {
   modelOptions: { timestamps: false } // you can merge model options
 };
 
-const sequelize = new Sequelize(...);
+const sequelize = new Sequelize();
 const bruteStore = new ExpressBruteStore(sequelize, bruteStoreOptions);
 const brute = new ExpressBrute(bruteStore, bruteOptions);
 ```

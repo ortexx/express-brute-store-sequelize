@@ -7,7 +7,8 @@ const Store = require('../index');
 let sequelize = new Sequelize('database', 'username', 'password', {
   dialect: 'sqlite',
   storage: ':memory:',
-  logging: false
+  logging: false,
+  operatorsAliases: false
 });
 
 describe('ExpressBruteStoreSequelize:', function () {

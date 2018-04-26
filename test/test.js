@@ -92,17 +92,26 @@ describe('ExpressBruteStoreSequelize:', function () {
   });
 
   describe('#clear()', function () {
-    it('check clearing', function () {
+    it('check clearing lifetime', function () {
       return store.set(key, data, lifetime).then(() => {
         return store.clear(2).then(() => {
           return store.model.count().then((count) => {
             assert.equal(count, 1);
           });
         }).then(() => {
-          return store.clear().then(() => {
+          return store.clear(-2).then(() => {
             return store.model.count().then((count) => {
               assert.equal(count, 0);
             });
+          });
+        });
+      });
+    });
+    it('check clearing truncate', function () {
+      return store.set(key, data, lifetime).then(() => {
+        return store.clear().then(() => {
+          return store.model.count().then((count) => {
+            assert.equal(count, 0);
           });
         });
       });

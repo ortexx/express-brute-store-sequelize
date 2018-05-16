@@ -39,4 +39,4 @@ You can find the model in `store.model`
 # More
 This transport has own method `.clear([lifetime], [callback])`
 
-You can clear old data using this. Lifetime(seconds) option for filtering by "updateAt" field.
+You can clear old data using this.lifetime(seconds) option for filtering by "updateAt" field.

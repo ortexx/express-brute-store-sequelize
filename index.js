@@ -107,7 +107,13 @@ class BruteStore extends AbstractClientStore {
     let clause = { truncate: true };
 
     if (typeof lifetime == 'number') {
-      clause = { where: { updatedAt: { [Sequelize.Op.lt]: new Date(Date.now() - lifetime * 1000) } } };
+      clause = { 
+        where: { 
+          updatedAt: { 
+            [Sequelize.Op? Sequelize.Op.lt: 'lt']: new Date(Date.now() - lifetime * 1000) 
+          } 
+        } 
+      };
     }
 
     return this.model.destroy(clause).then(() => {

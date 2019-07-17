@@ -8,10 +8,10 @@ let sequelize = new Sequelize('database', 'username', 'password', {
   dialect: 'sqlite',
   storage: ':memory:',
   logging: false,
-  operatorsAliases: false
+  operatorsAliases: +((Sequelize.version || '').split('.')[0]) >=5? undefined: false
 });
 
-describe('ExpressBruteStoreSequelize:', function () {
+describe('ExpressBruteStoreSequelize', function () {
   let store;
   let lifetime = 10;
   let key = 'key';
@@ -21,29 +21,29 @@ describe('ExpressBruteStoreSequelize:', function () {
     return sequelize.sync({ force: true });
   });
 
-  describe('#constructor()', function () {
+  describe('.constructor()', function () {
     store = new Store(sequelize);
 
-    it('check creation', function () {
+    it('should create an instanse', function () {
       assert.instanceOf(store, Store);
     });
   });
 
-  describe('#set()', function () {
-    it('check setting', function () {
+  describe('.set()', function () {
+    it('should set the value', function () {
       return store.set(key, data, lifetime).then((crt) => {
-        return store.model.find({ where: { key: key } }).then((res) => {
+        return store.model.findOne({ where: { key: key } }).then((res) => {
           assert.equal(crt.count, data.count, 'wrong returned data');
           assert.equal(res.count, data.count, 'wrong db data');
         })
       });
     });
 
-    it('check updating', function () {
+    it('shoud update the value', function () {
       data.count++;
 
       return store.set(key, data, lifetime).then((upd) => {
-        return store.model.find({ where: { key: key } }).then((res) => {
+        return store.model.findOne({ where: { key: key } }).then((res) => {
           assert.equal(upd.count, data.count, 'wrong returned data');
           assert.equal(res.count, data.count, 'wrong db data');
         })
@@ -51,14 +51,14 @@ describe('ExpressBruteStoreSequelize:', function () {
     });
   });
 
-  describe('#get()', function () {
-    it('check getting', function () {
+  describe('.get()', function () {
+    it('should get the value', function () {
       return store.get(key).then((res) => {
         assert.equal(res.count, data.count);
       });
     });
 
-    it('check expiration', function () {
+    it('should return the right expiration', function () {
       return store.model.findOne({ where: { key: key } }).then((res) => {
         if (!res) {
           throw new Error('Not found doc');
@@ -77,8 +77,8 @@ describe('ExpressBruteStoreSequelize:', function () {
     });
   });
 
-  describe('#reset()', function () {
-    it('check resetting', function () {
+  describe('.reset()', function () {
+    it('should reset the value', function () {
       return store.set(key, data, lifetime).then(() => {
         return store.reset(key).then((res) => {
           assert.isUndefined(res);
@@ -91,8 +91,8 @@ describe('ExpressBruteStoreSequelize:', function () {
     });
   });
 
-  describe('#clear()', function () {
-    it('check clearing lifetime', function () {
+  describe('.clear()', function () {
+    it('should clear by a lifetime', function () {
       return store.set(key, data, lifetime).then(() => {
         return store.clear(2).then(() => {
           return store.model.count().then((count) => {
@@ -107,7 +107,8 @@ describe('ExpressBruteStoreSequelize:', function () {
         });
       });
     });
-    it('check clearing truncate', function () {
+
+    it('should clear with a truncation', function () {
       return store.set(key, data, lifetime).then(() => {
         return store.clear().then(() => {
           return store.model.count().then((count) => {

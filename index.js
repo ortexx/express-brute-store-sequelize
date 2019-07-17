@@ -98,7 +98,7 @@ class BruteStore extends AbstractClientStore {
     });
   };
 
-  clear(lifetime, callback) {
+  clean(lifetime, callback) {
     if(typeof lifetime == 'function') {
       callback = lifetime;
       lifetime = undefined;
@@ -110,7 +110,7 @@ class BruteStore extends AbstractClientStore {
       clause = { 
         where: { 
           updatedAt: { 
-            [Sequelize.Op? Sequelize.Op.lt: 'lt']: new Date(Date.now() - lifetime * 1000) 
+            [Sequelize.Op? Sequelize.Op.lt: 'lt']: new Date(Date.now() - lifetime) 
           } 
         } 
       };

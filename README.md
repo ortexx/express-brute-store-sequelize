@@ -22,7 +22,7 @@ const bruteOptions =  {
 }
 
 const bruteStoreOptions = {
-  tableName: 'ExpressBrute', // this is default name
+  tableName: 'ExpressBrute', // this is a default name
   fields: { key: Sequelize.STRING }, // you can merge model fields
   modelOptions: { timestamps: false } // you can merge model options
 };
@@ -32,11 +32,11 @@ const bruteStore = new ExpressBruteStore(sequelize, bruteStoreOptions);
 const brute = new ExpressBrute(bruteStore, bruteOptions);
 ```
 
-Sequelize model will be created after sequelize.sync() 
+Sequelize model is created after __sequelize.sync()__
 
 You can find the model in `store.model`
 
 # More
-This transport has own method `.clear([lifetime], [callback])`
+This transport has own method `.clean([lifetime], [callback])`
 
-You can clear old data using this.clear(seconds) option for filtering by "updateAt" field.
+You can clean the old data via __this.clean(ms)__, filtering by "updateAt" field.

@@ -91,15 +91,15 @@ describe('ExpressBruteStoreSequelize', function () {
     });
   });
 
-  describe('.clear()', function () {
-    it('should clear by a lifetime', function () {
+  describe('.clean()', function () {
+    it('should clean by a lifetime', function () {
       return store.set(key, data, lifetime).then(() => {
-        return store.clear(2).then(() => {
+        return store.clean(2000).then(() => {
           return store.model.count().then((count) => {
             assert.equal(count, 1);
           });
         }).then(() => {
-          return store.clear(-2).then(() => {
+          return store.clean(-2000).then(() => {
             return store.model.count().then((count) => {
               assert.equal(count, 0);
             });
@@ -108,9 +108,9 @@ describe('ExpressBruteStoreSequelize', function () {
       });
     });
 
-    it('should clear with a truncation', function () {
+    it('should clean with a truncation', function () {
       return store.set(key, data, lifetime).then(() => {
-        return store.clear().then(() => {
+        return store.clean().then(() => {
           return store.model.count().then((count) => {
             assert.equal(count, 0);
           });

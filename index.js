@@ -68,7 +68,7 @@ class BruteStore extends AbstractClientStore {
     return this.model.findOne({ where: { key: key } }).then((brute) => {
       if (!brute) {
         typeof callback == 'function' && callback();  
-        return;      
+        return null;      
       }
 
       let data = brute.get();
@@ -76,7 +76,7 @@ class BruteStore extends AbstractClientStore {
       if (data.lifetime < new Date()) {
         return brute.destroy().then(() => {
           typeof callback == 'function' && callback();
-          return;
+          return null;
         });
       }
 

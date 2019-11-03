@@ -66,7 +66,7 @@ describe('ExpressBruteStoreSequelize', function () {
 
         return res.update({ lifetime: Date.now() }).then(() => {
           return store.get(key).then((res) => {
-            assert.isUndefined(res);
+            assert.isNull(res);
           });
         }).then(() => {
           return store.model.findOne({where: {key: key}}).then((res) => {

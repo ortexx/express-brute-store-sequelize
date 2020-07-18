@@ -1,6 +1,6 @@
 {
   "name": "express-brute-store-sequelize",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Sequelize store for module express-brute",
   "main": "./index.js",
   "author": {
@@ -19,13 +19,13 @@
     "test": "mocha"
   },
   "dependencies": {
-    "sequelize": ">=3.0.0 <=5.x"
+    "sequelize": ">=3.0.0 <=6.x"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "express-brute": "^1.0.1",
-    "mocha": "^7.1.1",
-    "sqlite3": "^4.1.1"
+    "mocha": "^7.2.0",
+    "sqlite3": "^4.2.0"
   },
   "repository": {
     "type": "git",

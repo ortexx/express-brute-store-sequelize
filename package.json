@@ -19,7 +19,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "sequelize": ">=3.0.0 <=6.x"
+    "sequelize": ">=3.0.0 <=7"
   },
   "devDependencies": {
     "chai": "^3.5.0",
